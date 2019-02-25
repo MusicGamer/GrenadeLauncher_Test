@@ -8,10 +8,16 @@ public class Weapon : MonoBehaviour
     public Transform firePoint;
     public GameObject bullet;
     public float fireRate = 5f;
-    private int armor = 5;
     public bool isReload;
-    private float timeToFire = 0f;
 
+    private int armor = 5;  
+    private float timeToFire = 0f;
+    private PlayerController pc;
+
+    private void Start()
+    {
+        pc = gameObject.GetComponentInParent(typeof(PlayerController)) as PlayerController;
+    }
 
     void Update()
     {       
@@ -31,6 +37,7 @@ public class Weapon : MonoBehaviour
         if (Time.time >= timeToFire)
         {
             Grenade grena = Instantiate(bullet, firePoint.position, transform.rotation).GetComponent<Grenade>();
+            pc.animator.Play("assault_combat_shoot"); 
             grena.target = target;
             armor--;
             timeToFire = Time.time + 1f / fireRate;

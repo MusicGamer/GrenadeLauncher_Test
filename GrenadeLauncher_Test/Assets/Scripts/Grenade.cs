@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class Grenade : MonoBehaviour
 {
-    public Transform target;
+    public Transform target; public float radius = 2;
+    public float damage = 20f;
+    public float bulletSpeed = 10f;
+
     private float startAngle;
     private Vector3 startVector;
     private Vector3 targetVector;
@@ -13,19 +16,14 @@ public class Grenade : MonoBehaviour
     private float startDistance;
     private const float gravity = 9.81f;
     private int amountOfJump = 3;
-    public float radius = 2;
-    public float damage = 20f;
-
-    public float bulletSpeed = 10f;
+    
 
     void Start()
     {
         targetVector = target.position;
         startVector = transform.position;
-
         startDistance = GetDistance(targetVector);
-        float angleBObjects = Vector3.Angle(targetVector, transform.position) * Mathf.Deg2Rad;
-        startAngle = StartAngle(startVector.y - 0.4f);
+        startAngle = StartAngle(startVector.y - 00.2f);
     }
 
     void FixedUpdate()
@@ -40,7 +38,7 @@ public class Grenade : MonoBehaviour
         {
             startDistance /= 2;
             targetVector = targetVector + (transform.forward.normalized * startDistance);
-            startVector.y = 0.4f;
+            startVector.y = 0.2f;
             startAngle = StartAngle(0);
             amountOfJump -= 1;
             GameController.instance.DamageEnemies(transform.position, radius, damage);

@@ -5,21 +5,20 @@ using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
-    Camera camera;
-    NavMeshAgent nmAgent;
     public Animator animator;
-    CustomRaycast cr = new CustomRaycast();
-    GameObject[] enemies;
     public float triggerRadius = 10f;
-    Weapon weapon;
+
+    private Camera camera;
+    private NavMeshAgent nmAgent;    
+    private CustomRaycast cr = new CustomRaycast();
+    private GameObject[] enemies;
+    private Weapon weapon;
     private bool isRuning = false;
 
     void Start()
     {
         nmAgent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
-        enemies = GameController.instance.enemies;
-        enemies = GameObject.FindGameObjectsWithTag("Enemy");
         camera = Camera.main;
         weapon = GetComponentInChildren<Weapon>();
     }
@@ -47,16 +46,21 @@ public class PlayerController : MonoBehaviour
 
     private void CheckEnemy()
     {
+        enemies = GameController.instance.enemies;
+        float distance = triggerRadius;
+        GameObject crrentEnemy = null;
         for (int i = 0; i < enemies.Length; i++)
         {
-            if (enemies[i] != null && Vector3.Distance(transform.position, enemies[i].transform.position) <= triggerRadius)
+            if (enemies[i] != null && Vector3.Distance(transform.position, enemies[i].transform.position) <= distance)
             {
-                if (!weapon.isReload)
-                {
-                    transform.LookAt(enemies[i].transform);
-                    weapon.Shoot(enemies[i].transform);                   
-                }
+                distance = Vector3.Distance(transform.position, enemies[i].transform.position);
+                crrentEnemy = enemies[i];
             }
+        }
+        if (crrentEnemy != null && !weapon.isReload)
+        {
+            transform.LookAt(crrentEnemy.transform);
+            weapon.Shoot(crrentEnemy.transform);
         }
     }
 

@@ -22,18 +22,13 @@ public class GameController : MonoBehaviour
     #endregion
 
     public GameObject[] enemies;
+    public GameObject enemy;
 
-    // Start is called before the first frame update
     void Start()
     {
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void DamageEnemies(Vector3 bulletPos, float triggerRange, float damage)
     {
@@ -46,8 +41,9 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void RecalculateEnemies()
+    public void CreateEnemy()
     {
+        Instantiate(enemy, new Vector3(Random.Range(0, 20), 0, Random.Range(0, 20)), transform.rotation);
         enemies = GameObject.FindGameObjectsWithTag("Enemy");
     }
 }
